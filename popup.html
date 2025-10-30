@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quote Sender 2015</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 380px;
+            height: 500px;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a0033, #330066, #4d0099, #6600cc);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255,0,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,0,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: grid-move 10s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+        
+        .main-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0.05) 50%, 
+                rgba(255,255,255,0.1) 100%);
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 
+                inset 0 0 20px rgba(255,255,255,0.1),
+                inset 0 0 40px rgba(0,255,255,0.1),
+                0 0 20px rgba(255,0,255,0.3),
+                0 0 40px rgba(0,255,255,0.2);
+        }
+        
+        .chrome-panel {
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+            border-radius: 15px;
+            margin: 20px;
+            padding: 20px;
+            box-shadow: 
+                20px 20px 60px #bebebe,
+                -20px -20px 60px #ffffff,
+                inset 2px 2px 5px rgba(255,255,255,0.6),
+                inset -2px -2px 5px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chrome-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255,255,255,0.3), 
+                transparent);
+            animation: chrome-shine 3s infinite;
+        }
+        
+        @keyframes chrome-shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .neon-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 
+                0 0 10px #ff00ff,
+                0 0 20px #ff00ff,
+                0 0 30px #ff00ff,
+                0 0 40px #ff00ff,
+                2px 2px 4px rgba(0,0,0,0.8);
+            margin-bottom: 20px;
+            animation: neon-flicker 2s infinite alternate;
+        }
+        
+        @keyframes neon-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .frosted-glass {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+        
+        .interval-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .radio-button-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: linear-gradient(145deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2));
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .radio-button-wrapper:hover {
+            background: linear-gradient(145deg, rgba(102,126,234,0.4), rgba(118,75,162,0.4));
+            box-shadow: 
+                0 0 20px rgba(102,126,234,0.5),
+                inset 0 0 10px rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .radio-button-wrapper input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #fff, #e6e6e6);
+            margin-right: 12px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.2),
+                0 2px 4px rgba(255,255,255,0.5);
+        }
+        
+        .radio-button-wrapper input[type="radio"]:checked {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.3),
+                0 0 15px rgba(102,126,234,0.8),
+                0 0 25px rgba(118,75,162,0.6);
+        }
+        
+        .radio-button-wrapper input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+        
+        .radio-label {
+            color: #1a1a1a;
+            font-size: 12px;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
+        
+        .winamp-button {
+            background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.5),
+                0 4px 8px rgba(0,0,0,0.3),
+                0 0 20px rgba(102,126,234,0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .winamp-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.3), 
+                transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .winamp-button:hover::before {
+            left: 100%;
+        }
+        
+        .winamp-button:hover {
+            background: linear-gradient(145deg, #5a5a5a, #3a3a3a);
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.5),
+                0 6px 12px rgba(0,0,0,0.4),
+                0 0 30px rgba(102,126,234,0.6);
+            transform: translateY(-2px);
+        }
+        
+        .winamp-button:active {
+            background: linear-gradient(145deg, #3a3a3a, #1a1a1a);
+            box-shadow: 
+                inset 0 4px 8px rgba(0,0,0,0.7),
+                0 2px 4px rgba(0,0,0,0.3);
+            transform: translateY(0);
+        }
+        
+        .visualizer {
+            height: 40px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            margin: 15px 0;
+            gap: 3px;
+        }
+        
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #ff00ff, #00ffff);
+            border-radius: 2px 2px 0 0;
+            animation: dance 0.5s ease-in-out infinite alternate;
+            box-shadow: 0 0 10px rgba(255,0,255,0.8);
+        }
+        
+        .bar:nth-child(1) { animation-delay: 0s; height: 20%; }
+        .bar:nth-child(2) { animation-delay: 0.1s; height: 40%; }
+        .bar:nth-child(3) { animation-delay: 0.2s; height: 60%; }
+        .bar:nth-child(4) { animation-delay: 0.3s; height: 30%; }
+        .bar:nth-child(5) { animation-delay: 0.4s; height: 70%; }
+        .bar:nth-child(6) { animation-delay: 0.5s; height: 50%; }
+        .bar:nth-child(7) { animation-delay: 0.6s; height: 80%; }
+        .bar:nth-child(8) { animation-delay: 0.7s; height: 35%; }
+        
+        @keyframes dance {
+            0% { transform: scaleY(1); }
+            100% { transform: scaleY(1.5); }
+        }
+        
+        .status-display {
+            background: linear-gradient(145deg, #000033, #000066);
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            padding: 8px;
+            margin-top: 15px;
+            text-align: center;
+            color: #00ffff;
+            font-size: 10px;
+            font-weight: 700;
+            text-shadow: 0 0 5px #00ffff;
+            box-shadow: 
+                inset 0 0 10px rgba(0,255,255,0.3),
+                0 0 15px rgba(0,255,255,0.2);
+        }
+        
+        .doc-input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .input-label {
+            color: #2a2a2a;
+            font-size: 11px;
+            font-weight: 900;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        .doc-input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(102,126,234,0.5);
+            border-radius: 5px;
+            padding: 8px 12px;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            font-size: 11px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.3),
+                0 0 10px rgba(102,126,234,0.2);
+        }
+        
+        .doc-input:focus {
+            border-color: #00ffff;
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.3),
+                0 0 20px rgba(0,255,255,0.4);
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .doc-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .fortune-button {
+            background: linear-gradient(145deg, #ff00ff, #cc00cc);
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+            animation: fortune-pulse 2s infinite alternate;
+        }
+        
+        @keyframes fortune-pulse {
+            0% { box-shadow: 0 0 20px rgba(255,0,255,0.5); }
+            100% { box-shadow: 0 0 30px rgba(255,0,255,0.8), 0 0 40px rgba(255,0,255,0.4); }
+        }
+        
+        .fortune-button:hover {
+            background: linear-gradient(145deg, #ff33ff, #ff00ff);
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.5),
+                0 6px 12px rgba(0,0,0,0.4),
+                0 0 40px rgba(255,0,255,0.8);
+        }
+        
+        .fortune-display {
+            background: linear-gradient(145deg, rgba(255,0,255,0.1), rgba(0,255,255,0.1));
+            border: 2px solid rgba(255,0,255,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 
+                inset 0 0 20px rgba(255,0,255,0.2),
+                0 0 30px rgba(0,255,255,0.3);
+            animation: fortune-glow 3s infinite alternate;
+        }
+        
+        @keyframes fortune-glow {
+            0% { border-color: rgba(255,0,255,0.3); }
+            100% { border-color: rgba(0,255,255,0.5); }
+        }
+        
+        .fortune-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 
+                0 0 10px #ff00ff,
+                0 0 20px #ff00ff,
+                0 0 30px #ff00ff;
+            margin-bottom: 10px;
+            animation: title-flicker 1.5s infinite alternate;
+        }
+        
+        @keyframes title-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .fortune-text {
+            text-align: center;
+            color: #2a2a2a;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.6;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.9);
+            font-style: italic;
+            background: rgba(255,255,255,0.4);
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .fortune-text.loading {
+            animation: text-dance 0.5s infinite alternate;
+        }
+        
+        @keyframes text-dance {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-3px); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="chrome-panel">
+            <div class="neon-title">QUOTE SENDER 2015</div>
+            
+            <div class="visualizer">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            
+            <div class="frosted-glass">
+                <div class="interval-selector">
+                    <label class="radio-button-wrapper">
+                        <input type="radio" name="interval" value="5" checked>
+                        <span class="radio-label">⚡ EVERY 5 MINUTES</span>
+                    </label>
+                    <label class="radio-button-wrapper">
+                        <input type="radio" name="interval" value="10">
+                        <span class="radio-label">🌟 EVERY 10 MINUTES</span>
+                    </label>
+                    <label class="radio-button-wrapper">
+                        <input type="radio" name="interval" value="15">
+                        <span class="radio-label">💫 EVERY 15 MINUTES</span>
+                    </label>
+                    <label class="radio-button-wrapper">
+                        <input type="radio" name="interval" value="30">
+                        <span class="radio-label">🚀 EVERY 30 MINUTES</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button class="winamp-button" id="save">💾 SAVE SETTINGS</button>
+            
+            <div class="frosted-glass">
+                <div class="doc-input-section">
+                    <label class="input-label">📄 GOOGLE DOC ID:</label>
+                    <input type="text" id="docId" class="doc-input" placeholder="Enter Google Doc ID...">
+                </div>
+            </div>
+            
+            <button class="winamp-button fortune-button" id="boiKieu">🔮 BÓI KIỀU</button>
+            
+            <div class="fortune-display" id="fortuneDisplay">
+                <div class="fortune-title">🌸 LỜI TIÊN TRI 🌸</div>
+                <div class="fortune-text" id="fortuneText">
+                    Click "Bói Kiều" to receive your fortune...
+                </div>
+            </div>
+            
+            <div class="status-display" id="status">
+                ◆ READY TO SEND INSPIRATION ◆
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
