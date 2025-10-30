@@ -1,6 +1,6 @@
-# Bội Kiều - Chrome Extension
+# Bói Kiều - Chrome Extension
 
-Một tiện ích mở rộng Chrome giúp hiển thị các câu thơ từ "Truyện Kiều" của Nguyễn Du một cách ngẫu nhiên.
+Một tiện ích mở rộng Chrome giúp hiển thị các câu thơ từ "Truyện Kiều" của Nguyễn Du một cách ngẫu nhiên. Bói Kiều là một hình thức xem bói dân gian của người Việt, dựa trên việc chọn ngẫu nhiên một đoạn thơ trong “Truyện Kiều” của Nguyễn Du để luận giải vận mệnh, tình duyên, công việc hoặc thi cử.
 
 ## 📁 Cấu trúc dự án
 
